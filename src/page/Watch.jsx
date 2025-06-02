@@ -33,7 +33,9 @@ function Watch() {
   };
 
   console.log(id);
-  const ApiUrl = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&key=AIzaSyBSFV1kvB4Yj18Fc7wSrWZmHlwJ5caH0eU`;
+  const ApiUrl = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&key=${
+    import.meta.env.VITE_API_KEY
+  }`;
 
   const handleGetVideo = () => {
     axios.get(ApiUrl).then((res) => setVideo(res.data.items));
