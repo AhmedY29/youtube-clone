@@ -34,6 +34,14 @@ const router = createBrowserRouter([
       { path: "/search/:query", element: <Search /> },
     ],
   },
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+  {
+    path: "/signin",
+    element: <Signin />,
+  },
 ]);
 
 const Router = () => {
