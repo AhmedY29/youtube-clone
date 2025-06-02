@@ -1,6 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import "./App.css";
-import Router from "./Router/Router";
+import Router from "./Router/Router.jsx";
 
 function App() {
   return (
