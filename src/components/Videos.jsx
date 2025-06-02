@@ -1,14 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import Video from "./Video";
 
 const ApiUrl = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=sa&&key=${
   import.meta.env.VITE_API_KEY
 }`;
 console.log(ApiUrl, "url");
-// React Icon
-import { CiMenuKebab } from "react-icons/ci";
-import Video from "./Video";
-import { Link, useNavigate } from "react-router";
 
 function Videos() {
   const [videos, setVideos] = useState([]);

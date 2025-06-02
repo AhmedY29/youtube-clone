@@ -27,7 +27,9 @@ function Watch() {
   const handleGetVideos = () => {
     axios
       .get(
-        "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=sa&&key=AIzaSyBSFV1kvB4Yj18Fc7wSrWZmHlwJ5caH0eU"
+        `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=sa&&key=${
+          import.meta.env.VITE_API_KEY
+        }`
       )
       .then((res) => setVideos(res.data.items));
   };
