@@ -21,13 +21,11 @@ function SignUp() {
     }
     if (formData.email.trim() == "") {
       toast.error("Please Filed Email!");
-
       return;
     }
     let emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (!emailRegex.test(formData.email)) {
       toast.error("Email Invalid!");
-
       return;
     }
 
@@ -37,7 +35,6 @@ function SignUp() {
     }
     if (formData.confirmPassword.trim() == "") {
       toast.error("Please Filed Confirm Password!");
-
       return;
     }
     if (!formData.agreement) {
@@ -92,7 +89,7 @@ function SignUp() {
   return (
     <section className="bg-[#1E1f20] flex justify-center items-center h-screen w-full">
       <div className="signup-content bg-[#0E0E0E] text-white w-[80%] h-fit p-10 rounded-xl">
-        <div className="flex justify-between">
+        <div className="flex flex-col lg:flex-row gap-5 items-center justify-between">
           <div className="text flex flex-col gap-5">
             <div className="img">
               <svg

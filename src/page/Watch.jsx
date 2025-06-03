@@ -40,6 +40,8 @@ function Watch() {
   }`;
 
   const handleGetVideo = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
     axios.get(ApiUrl).then((res) => setVideo(res.data.items));
   };
 
@@ -77,6 +79,8 @@ function Watch() {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
     handleGetComments();
   }, [loading]);
 
@@ -99,7 +103,6 @@ function Watch() {
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
           ></iframe>
           <div className="title">
             <h1>{video[0].snippet?.title}</h1>

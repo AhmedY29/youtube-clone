@@ -50,9 +50,9 @@ function Signin() {
     }
   };
   return (
-    <section className="bg-[#1E1f20] flex justify-center items-center h-screen w-full">
+    <section className="bg-[#1E1f20] flex  justify-center items-center h-screen w-full">
       <div className="signin-content bg-[#0E0E0E] text-white w-[80%] h-fit p-10 rounded-xl">
-        <div className="flex justify-between">
+        <div className="flex flex-col lg:flex-row gap-5 items-center justify-between">
           <div className="text flex flex-col gap-5">
             <div className="img">
               <svg
@@ -87,7 +87,7 @@ function Signin() {
               be available to other Google apps in the browser.
             </h1>
           </div>
-          <div className="form flex flex-col gap-3 w-[50%]">
+          <div className="form flex flex-col gap-3 lg:w-[50%]">
             <input
               className="p-1 py-2 border rounded-md"
               type="text"
@@ -107,10 +107,12 @@ function Signin() {
             />
             <div className="flex justify-between">
               <div className="agreement">
-                <input type="checkbox" name="agreement" id="" />
+                <input type="checkbox" name="agreement" id="agreement" />
                 <label htmlFor="agreement">Check me</label>
               </div>
-              <h1 className="text-blue-500 underline">Forget Password?</h1>
+              <h1 className="text-blue-500 underline cursor-pointer">
+                Forget Password?
+              </h1>
             </div>
             <button
               onClick={handleSignIn}

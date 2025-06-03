@@ -82,10 +82,12 @@ function Navbar() {
             <FaMicrophone fontSize={20} />
           </button>
         </div>
-        <div className="btns">
-          <div className="login">
+        <div className="btns hidden lg:block">
+          <div className="logout">
             <button
-              onClick={() => localStorage.clear()}
+              onClick={() => {
+                localStorage.clear(), navigate("/signin");
+              }}
               className="flex items-center gap-3 p-2 rounded-2xl cursor-pointer border border-gray-400 text-white"
             >
               <FaRegUserCircle fontSize={25} />
