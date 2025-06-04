@@ -2,7 +2,7 @@ import React from "react";
 
 function Tags() {
   return (
-    <div className="my-5 w-[90vw] lg:w-full overflow-hidden ">
+    <div className="my-5 w-[88vw] lg:w-[83.5vw] overflow-hidden ">
       <div className="flex gap-4  w-full overflow-x-auto">
         <span className=" p-1 px-2 rounded-md bg-gray-400/70 duration-200 transition cursor-pointer min-w-fit">
           All

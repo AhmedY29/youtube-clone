@@ -7,7 +7,7 @@ function Home() {
   return (
     <section className="home-section">
       <div className="home-content text-white flex gap-3 p-4">
-        <div className="sidebar sticky top-0 w-[20%] hidden lg:block">
+        <div className="sidebar sticky top-0 w-[20%] hidden xl:block">
           <Sidebar />
         </div>
         <div className="videos">

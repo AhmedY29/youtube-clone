@@ -35,7 +35,7 @@ function Navbar() {
           <div
             className={`${
               openMenu ? "flex" : "hidden"
-            } lg:hidden flex-col gap-3 absolute top-12 z-10 bg-black p-2 w-[93vw]`}
+            } xl:hidden flex-col gap-3 absolute top-12 z-10 bg-black p-2 w-[93vw]`}
           >
             <Sidebar />
             <div
