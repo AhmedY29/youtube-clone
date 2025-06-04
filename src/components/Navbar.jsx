@@ -101,7 +101,7 @@ function Navbar() {
           />
           <button
             type="submit"
-            className=" bg-[#ffffff14] rounded-r-2xl p-2.5 px-4 border border-gray-200/50"
+            className=" bg-[#ffffff14] rounded-r-2xl p-2.5 md:px-4 border border-gray-200/50"
           >
             <IoIosSearch fontSize={20} className=" text-white" />
           </button>
