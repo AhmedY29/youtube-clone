@@ -140,7 +140,7 @@ function SignUp() {
             />
             <input
               className="p-1 py-2 border rounded-md"
-              type="text"
+              type="password"
               name="password"
               id=""
               placeholder="Enter Your password"
@@ -148,7 +148,7 @@ function SignUp() {
             />
             <input
               className="p-1 py-2 border rounded-md"
-              type="text"
+              type="password"
               name="confirmPassword"
               id=""
               placeholder="Enter Your Confirm Password"

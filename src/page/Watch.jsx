@@ -15,8 +15,11 @@ import toast from "react-hot-toast";
 
 function Watch() {
   const [video, setVideo] = useState([]);
+  const [channelInfo, setChannelInfo] = useState([]);
+  const [channelId, setChannelId] = useState("");
   const [openDesc, setOpenDesc] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingComments, setLoadingComments] = useState(true);
   const [like, setLike] = useState(false);
   const [disLike, setDisLike] = useState(false);
   const [commentInput, setCommentInput] = useState("");
@@ -41,17 +44,38 @@ function Watch() {
 
   const handleGetVideo = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-
+    setLike(false);
     axios.get(ApiUrl).then((res) => setVideo(res.data.items));
   };
+  useEffect(() => {
+    handleGetVideos();
+  }, []);
 
   useEffect(() => {
     handleGetVideo();
   }, [id]);
   useEffect(() => {
-    handleGetVideos();
-  }, []);
+    setChannelId(video[0]?.snippet.channelId);
+  }, [video]);
+  useEffect(() => {
+    axios
+      .get(
+        `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${channelId}&key=${
+          import.meta.env.VITE_API_KEY
+        }`
+      )
+      .then((res) => {
+        setLoading(false), setChannelInfo(res.data.items);
+      });
+    console.log(channelInfo, "ssss");
+  }, [channelId]);
+  console.log(
+    channelInfo ? channelInfo[0]?.statistics?.subscriberCount : "",
+    "sss2s"
+  );
+
   console.log(video);
+  console.log(channelId, "ddd");
 
   const handleAddComment = () => {
     if (!commentInput.trim()) {
@@ -65,6 +89,7 @@ function Watch() {
         commentMsg: commentInput,
       })
       .then(() => {
+        setLoadingComments(!loadingComments);
         setLoading(false);
       });
     setCommentInput("");
@@ -82,9 +107,39 @@ function Watch() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
     handleGetComments();
-  }, [loading]);
+  }, [loading, loadingComments]);
+
+  const handleLikes = () => {
+    console.log(user?.id);
+
+    axios
+      .put(`https://68371fab664e72d28e43a55c.mockapi.io/users/${user?.id}`, {
+        likes: [
+          ...user.likes,
+          {
+            vidId: id,
+          },
+        ],
+      })
+      .then((res) => {
+        console.log(res),
+          localStorage.setItem(
+            "UserName-Account",
+            JSON.stringify({
+              id: res.data.id,
+              username: res.data.username,
+              likes: res.data.likes,
+            })
+          ),
+          toast.success("add Like");
+      });
+  };
 
   console.log(comments, "comments");
+  console.log(
+    user?.likes?.map((vid) => vid.vidId === id),
+    "???"
+  );
 
   console.log(loading);
 
@@ -93,23 +148,45 @@ function Watch() {
   }
   return (
     <section className="watch-section flex justify-center w-full text-white">
-      <div className="watch-content w-[90%] flex gap-5 flex-col lg:flex-row">
-        <div className="iframe flex flex-col gap-2 lg:w-[70%]">
+      <div className="watch-content w-[95%] flex gap-5 flex-col lg:flex-row">
+        <div className="iframe flex flex-col gap-2 lg:w-[65%]">
           <iframe
             width="100%"
             height="500"
-            src={`https://www.youtube.com/embed/${id}?si=88kKMb3sMaZmuGAk`}
+            src={`https://www.youtube.com/embed/${id}?si=88kKMb3sMaZmuGAk&autoplay=1`}
             title="YouTube video player"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
           ></iframe>
           <div className="title">
-            <h1>{video[0].snippet?.title}</h1>
+            <h1>{video[0]?.snippet?.title}</h1>
           </div>
-          <div className="info flex justify-between items-center">
+          <div className="info flex flex-col md:flex-row md:justify-between md:items-center gap-5">
             <div className="channel flex items-center gap-3">
-              <h1>{video[0].snippet?.channelTitle}</h1>
+              <img
+                src={
+                  channelInfo
+                    ? channelInfo[0]?.snippet?.thumbnails?.high?.url
+                    : ""
+                }
+                width={40}
+                className="rounded-full"
+                alt=""
+              />
+              <div className="">
+                <h1>{video[0]?.snippet?.channelTitle}</h1>
+                <h1 className="text-white/40">
+                  {Intl.NumberFormat().format(
+                    channelInfo
+                      ? channelInfo[0]?.statistics?.subscriberCount
+                      : 0
+                  )}{" "}
+                  subscribers
+                </h1>
+              </div>
+
               <button className="bg-white text-black p-2 rounded-xl cursor-pointer">
                 Subscribe
               </button>
@@ -117,13 +194,19 @@ function Watch() {
             <div className="actions flex gap-4">
               <div className="like bg-white/10 hover:bg-white/15 flex items-center gap-2 rounded-xl px-3 transition-all duration-200">
                 <button
-                  onClick={() => setLike(!like)}
+                  onClick={() => {
+                    setLike(!like), like ? "" : handleLikes();
+                  }}
                   className=" flex gap-3 items-center cursor-pointer text-xl"
                 >
                   {like ? <AiFillLike /> : <AiOutlineLike />}
                   {like
-                    ? +video[0].statistics?.likeCount + 1
-                    : video[0].statistics?.likeCount}
+                    ? Intl.NumberFormat().format(
+                        +video[0]?.statistics?.likeCount + 1
+                      )
+                    : Intl.NumberFormat().format(
+                        video[0]?.statistics?.likeCount
+                      )}
                 </button>
                 |
                 <button
@@ -150,18 +233,26 @@ function Watch() {
               </div>
             </div>
           </div>
-          <div className="desc">
-            <h1>{video[0].statistics?.viewCount} views</h1>
+          <div className="desc bg-white/10 p-1 rounded-md">
+            <h1>
+              {Intl.NumberFormat().format(video[0]?.statistics?.viewCount)}{" "}
+              views
+            </h1>
             <p
               onClick={() => setOpenDesc(!openDesc)}
-              className={`line-clamp-3 ${openDesc ? "line-clamp-none" : ""} `}
+              className={`line-clamp-3 ${
+                openDesc ? "line-clamp-none" : ""
+              } cursor-pointer `}
             >
-              {video[0].snippet?.description}
+              {video[0]?.snippet?.description}
             </p>
           </div>
           <div className="comments flex flex-col gap-3">
             <div className="flex gap-3">
-              <h1 className="text-xl font-bold">200 Comments</h1>
+              <h1 className="text-xl font-bold">
+                {comments.filter((comment) => comment.vidId == id).length}{" "}
+                Comments
+              </h1>
               <button className="flex items-center gap-2  bg-white/10 hover:bg-white/15 rounded-xl transition-all duration-200 p-2">
                 <MdSort /> Sort By
               </button>
@@ -210,7 +301,7 @@ function Watch() {
                       </h1>
                     </div>
                   </div>
-                  <div className="likes flex gap-3">
+                  <div className="likes ml-10 flex gap-3">
                     <button className="bg-white/10 hover:bg-white/15 rounded-xl transition-all duration-200 p-2">
                       <AiOutlineLike />
                     </button>
@@ -225,8 +316,18 @@ function Watch() {
             )}
           </div>
         </div>
-        <div className="suggest-video lg:w-[20%]">
+        <div className="suggest-video lg:w-[30%]">
           <div className="videos flex flex-col gap-3">
+            <a href="https://ahmed-alsaleh.netlify.app/" target="_blank">
+              <div className="flex items-center gap-3 w-fit border border-amber-300 rounded-md p-2">
+                <img
+                  width={140}
+                  src="https://ahmed-alsaleh.netlify.app/assets/project3-QbzhLVfn.jpeg"
+                  alt=""
+                />
+                <h1 className="text-sm w-[60%]">Ahmed Portfolio</h1>
+              </div>
+            </a>
             {videos.map((vid) => (
               <Link
                 className="cursor-pointer"
@@ -234,9 +335,22 @@ function Watch() {
                 to={`/watch/${vid.id}`}
               >
                 <div className="flex items-center gap-3 w-full">
-                  <img src={vid.snippet.thumbnails.default.url} alt="" />
-                  <h1 className="text-sm w-[60%]">{vid.snippet.title}</h1>
-                  {/* <h1>{vid.snippet.channelTitle}</h1> */}
+                  <img
+                    src={vid?.snippet?.thumbnails?.medium?.url}
+                    width={150}
+                    alt=""
+                  />
+                  <div className="text">
+                    <h1
+                      title={vid.snippet.title}
+                      className="text-sm line-clamp-3 w-[60%]"
+                    >
+                      {vid.snippet.title}
+                    </h1>
+                    <h1 className="opacity-65 hover:opacity-100">
+                      {vid.snippet.channelTitle}
+                    </h1>
+                  </div>
                 </div>
               </Link>
             ))}

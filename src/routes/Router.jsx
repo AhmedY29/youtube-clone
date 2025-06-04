@@ -10,6 +10,7 @@ import Watch from "../page/Watch";
 import SignUp from "../page/SignUp";
 import Signin from "../page/SignIn";
 import Search from "../page/Search";
+import Likes from "../page/Likes";
 
 const Layout = () => {
   let user = JSON.parse(localStorage.getItem("UserName-Account"));
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/watch/:id", element: <Watch /> },
       { path: "/search/:query", element: <Search /> },
+      { path: "/likes", element: <Likes /> },
     ],
   },
   {

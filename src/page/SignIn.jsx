@@ -34,6 +34,7 @@ function Signin() {
           JSON.stringify({
             id: user.id,
             username: user.username,
+            likes: user.likes,
           })
         );
 

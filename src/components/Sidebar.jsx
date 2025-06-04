@@ -1,6 +1,10 @@
 import React from "react";
 import SidebarIcon from "./SidebarIcon";
 
+// React Icon
+import { AiOutlineLike } from "react-icons/ai";
+import { Link } from "react-router";
+
 function Sidebar() {
   return (
     <section className="sidebar-section">
@@ -126,6 +130,9 @@ function Sidebar() {
           }
           title="History"
         />
+        <Link to={"/likes"}>
+          <SidebarIcon icon={<AiOutlineLike />} title="Liked Video" />
+        </Link>
       </div>
     </section>
   );

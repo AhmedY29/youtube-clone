@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
 import Videos from "../components/Videos";
+import Tags from "../components/Tags";
 
 function Home() {
   return (
@@ -10,6 +11,7 @@ function Home() {
           <Sidebar />
         </div>
         <div className="videos">
+          <Tags />
           <Videos />
         </div>
       </div>

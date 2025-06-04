@@ -7,12 +7,15 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { FaMicrophone } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import Sidebar from "./Sidebar";
 
 function Navbar() {
   const [search, setSearch] = useState("");
+  const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault();
     if (!search.trim()) {
       toast.error("filed Search");
       return;
@@ -22,10 +25,31 @@ function Navbar() {
   return (
     <nav className="nav-section p-3">
       <div className="nav-content flex justify-between items-center">
-        <div className="img flex items-center gap-2">
-          <button className="rounded-full p-2 text-white hover:bg-white/20 transition-all duration-200">
+        <div className="img relative flex items-center gap-2">
+          <button
+            onClick={() => setOpenMenu(!openMenu)}
+            className="rounded-full p-2 text-white hover:bg-white/20 transition-all duration-200"
+          >
             <IoIosMenu fontSize={35} />
           </button>
+          <div
+            className={`${
+              openMenu ? "flex" : "hidden"
+            } lg:hidden flex-col gap-3 absolute top-12 z-10 bg-black p-2 w-[93vw]`}
+          >
+            <Sidebar />
+            <div
+              onClick={() => {
+                localStorage.clear(), navigate("/signin");
+              }}
+              className="logout rounded-xl cursor-pointer hover:bg-white/20 duration-200 transition-all"
+            >
+              <button className="flex items-center gap-3 p-2 rounded-2xl cursor-pointer text-white">
+                <FaRegUserCircle fontSize={25} />
+                Logout
+              </button>
+            </div>
+          </div>
           <Link to={"/"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -63,25 +87,28 @@ function Navbar() {
           </Link>
         </div>
 
-        <div className="search flex text-white items-center">
+        <form
+          onSubmit={handleSearch}
+          className="search flex text-white items-center"
+        >
           <input
-            type="text"
+            type="search"
             id="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
-            className="rounded-l-2xl p-1 pl-2 border border-gray-200"
+            className="rounded-l-2xl p-2 pl-3 lg:w-100 border border-gray-200/50"
           />
           <button
-            onClick={handleSearch}
-            className=" bg-[#ffffff14] rounded-r-2xl p-1.5 px-4 border border-gray-200"
+            type="submit"
+            className=" bg-[#ffffff14] rounded-r-2xl p-2.5 px-4 border border-gray-200/50"
           >
             <IoIosSearch fontSize={20} className="text-white" />
           </button>
           <button className="bg-[#ffffff14] ml-2 rounded-full p-2 text-white hover:bg-white/20 transition-all duration-200">
             <FaMicrophone fontSize={20} />
           </button>
-        </div>
+        </form>
         <div className="btns hidden lg:block">
           <div className="logout">
             <button

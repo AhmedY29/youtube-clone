@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import Video from "./Video";
 
 const ApiUrl = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=sa&&key=${
@@ -10,15 +10,22 @@ console.log(ApiUrl, "url");
 
 function Videos() {
   const [videos, setVideos] = useState([]);
+  const [vidId, setVidId] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const handleGetVideos = () => {
-    axios.get(ApiUrl).then((res) => setVideos(res.data.items));
+    axios.get(ApiUrl).then((res) => {
+      setLoading(false), setVideos(res.data.items);
+    });
   };
 
   useEffect(() => {
     handleGetVideos();
   }, []);
 
+  if (loading) {
+    return <h1>Loading ...</h1>;
+  }
   console.log(videos);
   return (
     <section className="video-section">
@@ -52,21 +59,27 @@ function Videos() {
             </h1>
           </div>
         </div> */}
-        {videos.map((vid) => (
-          <Link
-            onMouseMove={() => setVidId(vid.id)}
-            key={vid.id}
-            to={`/watch/${vid.id}`}
-          >
-            <Video
-              thumbnail={vid.snippet.thumbnails.maxres.url}
-              vidTitle={vid.snippet.title}
-              channelTitle={vid.snippet.channelTitle}
-              views={vid.statistics.viewCount}
-              duration={vid.contentDetails.duration}
-            />
-          </Link>
-        ))}
+        {videos?.map((vid) =>
+          vid?.snippet?.thumbnails?.maxres?.url ? (
+            <Link
+              onMouseMove={() => setVidId(vid?.snippet?.channelId)}
+              key={vid?.id}
+              to={`/watch/${vid?.id}`}
+            >
+              <Video
+                thumbnail={vid?.snippet?.thumbnails?.maxres?.url}
+                vidTitle={vid?.snippet?.title}
+                channelId={vid?.snippet?.channelId}
+                channelTitle={vid?.snippet?.channelTitle}
+                views={vid?.statistics?.viewCount}
+                publishedAt={vid?.snippet?.publishedAt}
+                duration={vid?.contentDetails?.duration}
+              />
+            </Link>
+          ) : (
+            ""
+          )
+        )}
       </div>
     </section>
   );
