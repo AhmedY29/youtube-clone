@@ -30,7 +30,7 @@ function Navbar() {
             onClick={() => setOpenMenu(!openMenu)}
             className="rounded-full p-2 text-white hover:bg-white/20 transition-all duration-200"
           >
-            <IoIosMenu fontSize={35} />
+            <IoIosMenu fontSize={25} />
           </button>
           <div
             className={`${
@@ -97,7 +97,7 @@ function Navbar() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
-            className="rounded-l-2xl p-2 pl-3 lg:w-100 border border-gray-200/50"
+            className="rounded-l-2xl p-2 pl-3 w-40 lg:w-100 border border-gray-200/50"
           />
           <button
             type="submit"
