@@ -47,6 +47,7 @@ function Likes() {
               <img
                 src={res.snippet.thumbnails.medium.url}
                 className="rounded-md"
+                width={"200rem"}
                 alt=""
               />
 

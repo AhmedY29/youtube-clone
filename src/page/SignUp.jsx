@@ -121,7 +121,7 @@ function SignUp() {
             <h1 className="text-3xl">Create a Google Account</h1>
             <h1 className="">Enter Your Information</h1>
           </div>
-          <div className="form flex flex-col gap-3 w-[50%]">
+          <div className="form flex flex-col gap-3 lg:w-[50%]">
             <input
               className="p-1 py-2 border rounded-md"
               type="text"
