@@ -103,9 +103,9 @@ function Navbar() {
             type="submit"
             className=" bg-[#ffffff14] rounded-r-2xl p-2.5 px-4 border border-gray-200/50"
           >
-            <IoIosSearch fontSize={20} className="text-white" />
+            <IoIosSearch fontSize={20} className=" text-white" />
           </button>
-          <button className="bg-[#ffffff14] ml-2 rounded-full p-2 text-white hover:bg-white/20 transition-all duration-200">
+          <button className="hidden md:block bg-[#ffffff14] ml-2 rounded-full p-2 text-white hover:bg-white/20 transition-all duration-200">
             <FaMicrophone fontSize={20} />
           </button>
         </form>
