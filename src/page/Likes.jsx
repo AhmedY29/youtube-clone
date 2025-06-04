@@ -33,6 +33,8 @@ function Likes() {
     getLikedVid();
   }, [user, likes]);
 
+  console.log(result);
+
   return (
     <div className="flex justify-center w-full">
       <div className="w-[80%] flex flex-col gap-3">
@@ -40,7 +42,7 @@ function Likes() {
           Liked Video {result.length}
         </h1>
         {result?.map((res) => (
-          <Link key={res.id} to={`/watch/${res.id.videoId}`}>
+          <Link key={res.id} to={`/watch/${res.id}`}>
             <div className="flex items-center gap-3 w-full text-white ">
               <img
                 src={res.snippet.thumbnails.medium.url}
