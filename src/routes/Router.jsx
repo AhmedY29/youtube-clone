@@ -14,9 +14,9 @@ import Likes from "../page/Likes";
 
 const Layout = () => {
   let user = JSON.parse(localStorage.getItem("UserName-Account"));
-  if (!user) {
-    return <Navigate to={"/signin"} />;
-  }
+  // if (!user) {
+  //   return <Navigate to={"/signin"} />;
+  // }
   return (
     <>
       <Navbar />
